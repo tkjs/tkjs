@@ -1,4 +1,4 @@
-const customMorgan = require('./utilities/custom-morgan')
+const customMorgan = require('./middlewares/custom-morgan')
 const express = require('express')
 const app = express()
 
