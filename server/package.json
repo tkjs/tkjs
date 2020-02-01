@@ -6,10 +6,16 @@
   "scripts": {
     "dev": "nodemon app.js"
   },
-  "keywords": ["simple", "travian", "travian kingdom"],
+  "keywords": [
+    "simple",
+    "travian",
+    "travian kingdom"
+  ],
   "author": "didadadida93",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "morgan": "^1.9.1"
   }
 }
