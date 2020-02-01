@@ -4,13 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon bin/www"
   },
-  "keywords": [
-    "simple",
-    "travian",
-    "travian kingdom"
-  ],
+  "keywords": ["simple", "travian", "travian kingdom"],
   "author": "didadadida93",
   "license": "MIT",
   "dependencies": {

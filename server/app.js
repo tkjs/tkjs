@@ -1,14 +1,11 @@
 const customMorgan = require('./middlewares/custom-morgan')
+const routes = require('./routes')
 const express = require('express')
 const app = express()
-
-const port = process.env.PORT || 3000
 
 app.use(customMorgan)
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.get('/', function(req, res, next) {
-  res.json({ message: 'Server Alive!' })
-})
+app.use('/', routes)
 
-app.listen(port, () => console.log('listening on port', port))
+module.exports = app
