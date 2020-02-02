@@ -23,7 +23,7 @@ const customLog = [
   ':remote-addr',
   '":method :url :status"',
   ':custom-response-time',
-  '[:custom-date]',
+  ':custom-date',
 ].join(' ')
 
 module.exports = morgan(customLog)
