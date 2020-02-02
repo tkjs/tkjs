@@ -1,7 +1,7 @@
 const customMorgan = require('./middlewares/custom-morgan')
 const errorHandler = require('./middlewares/error-handler')
-const routes = require('./routes')
 const express = require('express')
+const routes = require('./routes')
 const app = express()
 
 app.use(customMorgan)
