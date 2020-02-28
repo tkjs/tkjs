@@ -14,8 +14,8 @@ async function lobbyAuthentication(email, password) {
   let msid,
     token,
     response,
-    cookies = [],
-    lobbySession = []
+    lobbySession = '',
+    cookies = ''
 
   response = await ai.get(url.getMsid)
   msid = regexGetMsid.exec(response.data)[1]
@@ -41,30 +41,39 @@ async function lobbyAuthentication(email, password) {
 
   // extract cookies
   response.headers['set-cookie'].forEach(cookieStr => {
-    if (cookieStr.includes('gl5SessionKey')) lobbySession.push(cookieStr)
-    cookies.push(cookieStr.split(';')[0])
+    if (cookieStr.includes('gl5SessionKey') && !lobbySession) {
+      lobbySession = cookieStr.split(';')[0].split(';')[0]
+    }
+
+    cookies += cookieStr.split(';')[0] + '; '
   })
 
-  lobbySession = lobbySession[0].split(';')[0]
+  cookies += cookies + `; msid=${msid}`
   lobbySession = regexGetSession.exec(lobbySession)[1]
-
-  cookies = cookies.join('; ') + `; msid=${msid}`
 
   // example on sending request using cookies and session
   // response = await ai.post(
-  //   url.lobbyApi,
-  //   {
-  //     action: 'getAll',
-  //     controller: 'player',
-  //     params: {},
-  //     session: lobbySession,
-  //   },
-  //   {
-  //     headers: {
-  //       cookie: cookies
-  //     }
-  //   }
+  // url.lobbyApi,
+  // {
+  // action: 'getAll',
+  // controller: 'player',
+  // params: {},
+  // session: lobbySession,
+  // },
+  // {
+  // headers: {
+  // cookie: cookies,
+  // },
+  // },
   // )
-  //
+
   // console.log(JSON.stringify(response.data, null, 2))
+
+  return [msid, lobbySession, cookies]
+}
+
+async function gameworldAuthentication(gameworld, msid, lobbySession, cookies) {
+  gameworld = gameworld.toLowerCase()
+
+  //
 }
