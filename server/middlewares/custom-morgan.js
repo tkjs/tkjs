@@ -4,6 +4,7 @@ const moment = require('moment')
 morgan.token('custom-date', function() {
   return moment().format('DD/MMM/YYYY HH:mm:ss')
 })
+
 morgan.token('custom-response-time', function(req, res, digits) {
   if (!req._startAt || !res._startAt) {
     // missing request and/or response start time

@@ -1,10 +1,12 @@
 module.exports = function(err, req, res, next) {
+  console.log(err)
   switch (err.name) {
-    case 'NotLogin':
-      res.status(403).json({ errors: [err.message] })
+    case 'BadRequest':
+      res.status(400).json({ errors: [err.message] })
       break
 
     default:
       res.status(500).json({ errors: [err] })
+      break
   }
 }

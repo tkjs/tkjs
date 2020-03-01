@@ -1,17 +1,27 @@
 {
-  "name": "server",
+  "name": "tkjs",
   "version": "0.0.1",
-  "description": "",
+  "description": "A simple Travian: Kingdom management tool",
   "main": "app.js",
   "scripts": {
     "dev": "nodemon bin/www"
   },
-  "keywords": ["simple", "travian", "travian kingdom"],
+  "keywords": [
+    "simple",
+    "travian",
+    "travian kingdom"
+  ],
   "author": "didadadida93",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "moment": "^2.24.0",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "redux": "^4.0.5"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
   }
 }
