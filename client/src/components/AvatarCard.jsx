@@ -1,8 +1,17 @@
 import React from 'react'
 
+import ai from '../api/axios-instance'
+
 export default function AvatarCard(props) {
   const onClickHandler = e => {
-    console.log('masuk')
+    ai.post('/login-gameworld', {
+      gameworldId: props.consumersId,
+      worldName: props.worldName,
+    })
+      .then(({ data }) => {
+        console.log(JSON.stringify(data, null, 2))
+      })
+      .catch(err => console.log(err.response))
   }
 
   return (
