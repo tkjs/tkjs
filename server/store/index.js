@@ -1,5 +1,5 @@
 const { createStore } = require('redux')
 
-const reducer = require('./reducer')
+const reducers = require('./reducers')
 
-module.exports = createStore(reducer)
+module.exports = createStore(reducers)
