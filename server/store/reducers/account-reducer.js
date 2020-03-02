@@ -2,11 +2,11 @@ const {
   UPDATE_EMAIL,
   UPDATE_PASSWORD,
   UPDATE_WORLD_NAME,
-  UPDATE_STATE,
+  UPDATE_ACCOUNT_STATE,
   RESET_EMAIL,
   RESET_PASSWORD,
   RESET_WORLD_NAME,
-  RESET_STATE,
+  RESET_ACCOUNT_STATE,
 } = require('../actionTypes')
 
 const initState = {
@@ -35,7 +35,7 @@ module.exports = function(state = initState, action) {
         worldName: action.worldName,
       }
 
-    case UPDATE_STATE:
+    case UPDATE_ACCOUNT_STATE:
       return {
         ...state,
         ...action.newState,
@@ -59,7 +59,7 @@ module.exports = function(state = initState, action) {
         worldName: '',
       }
 
-    case RESET_STATE: {
+    case RESET_ACCOUNT_STATE: {
       return {
         email: '',
         password: '',
