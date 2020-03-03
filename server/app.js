@@ -1,3 +1,5 @@
+if (process.env.NODE_ENV === 'development') require('dotenv').config()
+
 const logger = require('./middlewares/custom-morgan')
 const errorHandler = require('./middlewares/error-handler')
 const express = require('express')
