@@ -25,7 +25,7 @@ function extractSessionAge(cookieString) {
   return new Date(cookieString.split(';')[1].split('=')[1])
 }
 
-async function getAvatarList(session, cookies) {
+async function getAvatarList(lobbySession, lobbyCookies) {
   const response = await ai.post(
     url.lobbyApi,
     {
@@ -34,11 +34,11 @@ async function getAvatarList(session, cookies) {
       params: {
         names: ['Collection:Avatar'],
       },
-      session,
+      session: lobbySession,
     },
     {
       headers: {
-        cookie: cookies,
+        cookie: lobbyCookies,
       },
     },
   )
@@ -46,21 +46,24 @@ async function getAvatarList(session, cookies) {
   return response.data.cache[0].data.cache
 }
 
-async function lobbyAuthentication({ email, password }) {
+async function getMsid() {
+  const response = await ai.get(url.getMsid)
+  return extractMsid(response.data)
+}
+
+async function lobbyAuthentication({ email, password, msid }) {
   if (!email) throw { name: 'BadRequest', message: 'there is no email passed' }
   if (!password) {
     throw { name: 'BadRequest', message: 'there is no password passed' }
   }
 
-  let msid,
-    token,
+  let token,
     response,
-    lobbySessionAge,
-    lobbySession = '',
-    cookies = ''
-
-  response = await ai.get(url.getMsid)
-  msid = extractMsid(response.data)
+    lobby = {
+      session: '',
+      cookie: '',
+      age: null,
+    }
 
   response = await ai.post(
     url.generateToken`msid: ${msid}`,
@@ -83,37 +86,38 @@ async function lobbyAuthentication({ email, password }) {
 
   // extract cookies
   response.headers['set-cookie'].forEach(cookieStr => {
-    if (cookieStr.includes('gl5SessionKey') && !lobbySession) {
-      lobbySession = cookieStr.split(';')[0].split(';')[0]
-      lobbySessionAge = extractSessionAge(cookieStr)
+    if (cookieStr.includes('gl5SessionKey') && !lobby.session) {
+      lobby.session = cookieStr.split(';')[0].split(';')[0]
+      lobby.age = extractSessionAge(cookieStr)
     }
 
-    cookies += cookieStr.split(';')[0] + '; '
+    lobby.cookie += cookieStr.split(';')[0] + '; '
   })
 
-  cookies += cookies + `; msid=${msid}`
-  lobbySession = extractSession(lobbySession)
+  lobby.session = extractSession(lobby.session)
 
-  return [msid, lobbySession, lobbySessionAge, cookies]
+  return lobby
 }
 
 async function gameworldAuthentication({
   lobbySession,
+  lobbyCookies,
   gameworldId,
   worldName,
-  cookies,
   msid,
 }) {
   // get gameworld id based on worldName
   let token,
     response,
     avatarList,
-    gameworldSession,
-    gameworldSessionAge,
-    gameworldCookies = ''
+    gameworld = {
+      session: '',
+      cookie: '',
+      age: null,
+    }
 
   if (!gameworldId) {
-    avatarList = await getAvatarList(lobbySession, cookies)
+    avatarList = await getAvatarList(lobbySession, lobbyCookies)
 
     gameworldId = avatarList.find(
       gameworld => gameworld.data.worldName === worldName.toUpperCase(),
@@ -136,56 +140,21 @@ async function gameworldAuthentication({
 
   response.headers['set-cookie'].forEach(cookieStr => {
     if (cookieStr.includes('t5SessionKey')) {
-      gameworldSession = cookieStr.split(';')[0]
-      gameworldSessionAge = extractSessionAge(cookieStr)
+      gameworld.session = cookieStr.split(';')[0]
+      gameworld.age = extractSessionAge(cookieStr)
     }
 
-    gameworldCookies += cookieStr.split(';')[0] + '; '
+    gameworld.cookie += cookieStr.split(';')[0] + '; '
   })
 
-  gameworldSession = extractSession(gameworldSession)
+  gameworld.session = extractSession(gameworld.session)
 
-  return [gameworldSession, gameworldSessionAge, gameworldCookies]
-}
-
-async function main(email, password, worldName) {
-  const [
-    msid,
-    lobbySession,
-    lobbySessionAge,
-    lobbyCookies,
-  ] = await lobbyAuthentication(email, password)
-
-  const [
-    gameworldSession,
-    gameworldSessionAge,
-    gameworldCookies,
-  ] = await gameworldAuthentication(worldName, msid, lobbySession, lobbyCookies)
-
-  const cookies = lobbyCookies + '; ' + gameworldCookies
-
-  const response = await ai.post(
-    `${url.gameworldApi`worldName: ${worldName}`}/?c=cache&a=get&t=${Date.now()}`,
-    {
-      action: 'get',
-      controller: 'cache',
-      params: {
-        names: ['Player'],
-      },
-      session: gameworldSession,
-    },
-    {
-      headers: {
-        cookie: cookies,
-      },
-    },
-  )
-
-  console.log(JSON.stringify(response.data, null, 2))
+  return gameworld
 }
 
 module.exports = {
   lobbyAuthentication,
   gameworldAuthentication,
   getAvatarList,
+  getMsid,
 }
