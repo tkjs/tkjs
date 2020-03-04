@@ -7,15 +7,10 @@ const store = require('../store')
 
 router.get('/', function(req, res, next) {
   const {
-    account: { email, password },
     lobby: { session, cookie, age },
-    msid,
   } = store.getState()
 
   res.json({
-    msid,
-    email,
-    password,
     lobbySession: session,
     lobbyCookie: cookie,
     lobbyAge: age,
