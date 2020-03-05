@@ -27,7 +27,8 @@ router.get('/avatar-list', async function(req, res, next) {
       throw { name: 'Forbidden', message: 'there is no session' }
     }
 
-    const avatarList = await getAvatarList(session, cookie)
+    let avatarList = await getAvatarList(session, cookie)
+    avatarList = avatarList.map(avatar => avatar.data)
 
     res.json({ avatarList })
   } catch (err) {
