@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import LoadingOverlay from 'react-loading-overlay'
 import HashLoader from 'react-spinners/HashLoader'
 import { toast } from 'react-toastify'
 
 import ai from '../api/axios-instance'
-import AvatarCard from '../components/AvatarCard'
+import errorMessage from '../utilities/error-message'
 
 const styles = {
   container: {
@@ -15,25 +16,48 @@ const styles = {
 export default function HomePage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [response, setResponse] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const history = useHistory()
 
   const onSubmitHandler = event => {
     event.preventDefault()
 
+    const errors = []
+
+    if (!email) errors.push('Email is required')
+    if (!password) errors.push('Password is required')
+
+    if (errors.length > 0) {
+      errors.forEach(error => toast.error(error))
+      return
+    }
+
     setLoading(true)
 
-    ai.post('/gameworlds', { email, password })
+    ai.post('/lobby/login', { email, password })
       .then(({ data }) => {
-        setResponse(data)
-        console.log(JSON.stringify(data, null, 2))
+        setLoading(false)
+        history.push('/lobby')
       })
       .catch(err => {
-        console.log(err.response.data.errors)
-        err.response.data.errors.forEach(error => toast.error(error))
+        setLoading(false)
+        errorMessage(err)
       })
-      .finally(() => setLoading(false))
   }
+
+  useEffect(() => {
+    ai.get('/lobby')
+      .then(({ data }) => {
+        if (data.lobbySession) {
+          setLoading(false)
+          history.push('/lobby')
+        }
+      })
+      .catch(err => {
+        setLoading(false)
+        errorMessage(err)
+      })
+  }, [history])
 
   return (
     <LoadingOverlay
@@ -57,26 +81,45 @@ export default function HomePage() {
           </div>
           <form onSubmit={onSubmitHandler} className="flex flex-col">
             <input
-              className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 appearance-none leading-normal mb-2 placeholder-gray-900"
+              className={`
+                border 
+                rounded 
+                bg-white 
+                leading-normal 
+                py-2 px-4 mb-2 
+                appearance-none 
+                border-gray-300 
+                placeholder-gray-900
+                focus:outline-none 
+                focus:shadow-outline 
+              `}
               type="email"
               placeholder="jane@example.com"
               onChange={e => setEmail(e.target.value)}
+              autoFocus
             />
             <input
-              className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 appearance-none leading-normal mb-2 placeholder-gray-900"
+              className={`
+                border 
+                rounded 
+                bg-white 
+                leading-normal 
+                py-2 px-4 mb-2
+                appearance-none 
+                border-gray-300 
+                placeholder-gray-900
+                focus:outline-none 
+                focus:shadow-outline 
+              `}
               type="password"
               placeholder="password"
               onChange={e => setPassword(e.target.value)}
             />
             <input type="submit" value="login" hidden />
           </form>
-          {response ? (
-            response.avatarList.map(avatar => (
-              <AvatarCard {...avatar.data} key={avatar.data.consumersId} />
-            ))
-          ) : (
-            <p className="text-gray-300">There is no Avatar</p>
-          )}
+          <small className="text-gray-300 italic text-xs">
+            Press enter for submit
+          </small>
         </div>
       </div>
     </LoadingOverlay>

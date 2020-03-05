@@ -1,12 +1,22 @@
 import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+
 import './styles/tailwind.css'
 
 import HomePage from './containers/HomePage'
+import Lobby from './containers/Lobby'
 
 function App() {
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-900">
-      <HomePage />
+    <div className="h-screen bg-gray-900">
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route path="/lobby">
+          <Lobby />
+        </Route>
+      </Switch>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { ToastContainer, Slide } from 'react-toastify'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import 'react-toastify/dist/ReactToastify.css'
 import './styles/index.css'
@@ -21,7 +22,9 @@ ReactDOM.render(
       draggable={false}
       pauseOnHover={false}
     />
-    <App />
+    <Router>
+      <App />
+    </Router>
   </>,
   document.getElementById('root'),
 )
