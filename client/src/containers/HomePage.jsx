@@ -14,8 +14,7 @@ const styles = {
 }
 
 export default function HomePage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [credential, setCredential] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(true)
   const history = useHistory()
 
@@ -24,8 +23,8 @@ export default function HomePage() {
 
     const errors = []
 
-    if (!email) errors.push('Email is required')
-    if (!password) errors.push('Password is required')
+    if (!credential.email) errors.push('Email is required')
+    if (!credential.password) errors.push('Password is required')
 
     if (errors.length > 0) {
       errors.forEach(error => toast.error(error))
@@ -34,7 +33,10 @@ export default function HomePage() {
 
     setLoading(true)
 
-    ai.post('/lobby/login', { email, password })
+    ai.post('/lobby/login', {
+      email: credential.email,
+      password: credential.password,
+    })
       .then(({ data }) => {
         setLoading(false)
         history.push('/lobby')
@@ -51,7 +53,7 @@ export default function HomePage() {
         if (data.lobbySession) {
           setLoading(false)
           history.push('/lobby')
-        }
+        } else setLoading(false)
       })
       .catch(err => {
         setLoading(false)
@@ -95,7 +97,9 @@ export default function HomePage() {
               `}
               type="email"
               placeholder="jane@example.com"
-              onChange={e => setEmail(e.target.value)}
+              onChange={e =>
+                setCredential({ ...credential, email: e.target.value })
+              }
               autoFocus
             />
             <input
@@ -113,7 +117,9 @@ export default function HomePage() {
               `}
               type="password"
               placeholder="password"
-              onChange={e => setPassword(e.target.value)}
+              onChange={e =>
+                setCredential({ ...credential, password: e.target.value })
+              }
             />
             <input type="submit" value="login" hidden />
           </form>
