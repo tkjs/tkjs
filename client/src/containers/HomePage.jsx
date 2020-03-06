@@ -53,6 +53,7 @@ export default function HomePage() {
         if (data.lobbySession) {
           setLoading(false)
           history.push('/lobby')
+          return
         } else setLoading(false)
       })
       .catch(err => {
