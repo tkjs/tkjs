@@ -7,8 +7,8 @@ const {
   RESET_COOKIE,
   RESET_AGE,
   RESET_STATE,
-} = require('../actionTypes')
-const store = require('../index')
+} = require('./action-types')
+const store = require('../store')
 
 module.exports = {
   updateSession: session => {

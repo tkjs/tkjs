@@ -7,7 +7,7 @@ const {
   RESET_PASSWORD,
   RESET_WORLD_NAME,
   RESET_ACCOUNT_STATE,
-} = require('../actionTypes')
+} = require('../actions/action-types')
 
 const initState = {
   email: '',
@@ -68,6 +68,6 @@ module.exports = function(state = initState, action) {
     }
 
     default:
-      return state
+      throw `Unhandled action types: ${action.type}`
   }
 }

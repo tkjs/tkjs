@@ -7,8 +7,8 @@ const {
   RESET_PASSWORD,
   RESET_WORLD_NAME,
   RESET_ACCOUNT_STATE,
-} = require('../actionTypes')
-const store = require('../index')
+} = require('./action-types')
+const store = require('../store')
 
 module.exports = {
   updateEmail: email => store.dispatch({ type: UPDATE_EMAIL, email }),

@@ -1,4 +1,4 @@
-const { UPDATE_MSID, RESET_MSID } = require('../actionTypes')
+const { UPDATE_MSID, RESET_MSID } = require('../actions/action-types')
 const initState = ''
 
 module.exports = function(state = initState, action) {
@@ -10,6 +10,6 @@ module.exports = function(state = initState, action) {
       return ''
 
     default:
-      return state
+      throw `Unhandled action types: ${action.type}`
   }
 }

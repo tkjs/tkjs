@@ -7,7 +7,7 @@ const {
   RESET_COOKIE,
   RESET_AGE,
   RESET_STATE,
-} = require('../actionTypes')
+} = require('../actions/action-types')
 
 const initState = {
   session: '',
@@ -67,6 +67,6 @@ module.exports = function(state = initState, action) {
       }
 
     default:
-      return state
+      throw `Unhandled action types: ${action.type}`
   }
 }
