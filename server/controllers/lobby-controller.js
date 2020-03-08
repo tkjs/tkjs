@@ -31,13 +31,13 @@ class LobbyController {
 
   static async authenticate(request, response, next) {
     try {
-      let { email, body } = request.body
+      let { email, password } = request.body
       let msid = await getMsid()
       let lobby = await lobbyAuthentication({ email, password, msid })
 
       password = await encryptPassword(password)
 
-      actions.msid.updateMsid(msid)
+      actions.msid.update(msid)
       actions.account.updateState({ email, password })
       actions.lobby.updateState({ ...lobby })
 
@@ -48,7 +48,7 @@ class LobbyController {
   }
 
   static resetState(request, response, next) {
-    actions.msid.resetMsid()
+    actions.msid.reset()
     actions.account.resetState()
     actions.lobby.resetState()
     response.json({ message: `UpdateState:LogoutFromLobby 'success'` })

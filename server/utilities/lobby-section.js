@@ -34,7 +34,7 @@ async function getAvatarList() {
     },
     {
       headers: {
-        ...userAget,
+        ...userAgent,
         cookie,
       },
     },
