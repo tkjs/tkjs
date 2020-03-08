@@ -42,7 +42,7 @@ async function gameworldAuthentication({ gameworldId, worldName }) {
     url.generateGameworldSession`worldName: ${worldName}, token: ${token}, msid: ${msid}`,
     {
       maxRedirects: 0,
-      validateStatus: status => status >= 200 && status < 300,
+      validateStatus: status => status >= 200 && status < 303,
       headers: {
         ...userAgent,
       },

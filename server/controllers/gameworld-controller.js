@@ -1,6 +1,8 @@
 const store = require('../store')
 const actions = require('../actions')
 
+const { gameworldAuthentication } = require('../utilities')
+
 class GameworldController {
   static getState(request, response, next) {
     const {
