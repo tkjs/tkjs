@@ -2,7 +2,9 @@ module.exports = function(err, req, res, next) {
   console.log(err)
   switch (err.name) {
     case 'BadRequest':
-      res.status(400).json({ errors: [err.message] })
+      let errors = Array.isArray(err.message) ? err.message : [err.message]
+
+      res.status(400).json({ errors })
       break
 
     case 'Forbidden':
