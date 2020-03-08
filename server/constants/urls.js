@@ -12,8 +12,8 @@ module.exports = {
     `${lobbyUrl}/login.php?token=${token}&msid=${msid}&msname=msid`,
   gameworldApi: (_, gameworld) =>
     `${gameworldUrl`gameworld: ${gameworld}`}/api`,
-  joinGameworld: (_, gameworldId, msid) =>
+  generateGameworldToken: (_, gameworldId, msid) =>
     `${mellonUrl}/game-world/join/gameWorldId/${gameworldId}?msid=${msid}&msname=msid`,
-  generateGameworldToken: (_, worldName, token, msid) =>
+  joinGameworld: (_, worldName, token, msid) =>
     `${gameworldUrl`gameworld: ${worldName}`}/api/login.php?token=${token}&msid=${msid}&msname=msid`,
 }
