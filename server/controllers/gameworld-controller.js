@@ -38,3 +38,5 @@ class GameworldController {
     response.json({ message: `UpdateState:LogoutFromGameworld 'success'` })
   }
 }
+
+module.exports = GameworldController
