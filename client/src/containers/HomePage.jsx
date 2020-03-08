@@ -33,7 +33,7 @@ export default function HomePage() {
 
     setLoading(true)
 
-    ai.post('/lobby/login', {
+    ai.post('/lobby/authenticate', {
       email: credential.email,
       password: credential.password,
     })
@@ -50,7 +50,7 @@ export default function HomePage() {
   useEffect(() => {
     ai.get('/lobby')
       .then(({ data }) => {
-        if (data.lobbySession) {
+        if (data.status === 'Logged In') {
           setLoading(false)
           history.push('/lobby')
           return

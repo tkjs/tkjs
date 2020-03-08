@@ -16,7 +16,7 @@ export default function Lobby() {
     const main = async () => {
       try {
         const { data } = await ai.get('/gameworlds')
-        if (data.gameworldSession) {
+        if (data.status === 'Logged In') {
           setLoading(false)
           history.push('/gameworld')
         } else {

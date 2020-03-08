@@ -10,7 +10,7 @@ export default function AvatarCard(props) {
   const onClickHandler = e => {
     props.setLoading(true)
 
-    ai.post('/gameworlds/login', {
+    ai.post('/gameworlds/authenticate', {
       gameworldId: props.consumersId,
       worldName: props.worldName,
     })
