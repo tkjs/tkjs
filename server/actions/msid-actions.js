@@ -1,5 +1,5 @@
 const { UPDATE_MSID, RESET_MSID } = require('./action-types')
-const store = require('./store')
+const store = require('../store')
 
 module.exports = {
   update: msid => {
