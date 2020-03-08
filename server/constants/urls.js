@@ -14,6 +14,6 @@ module.exports = {
     `${gameworldUrl`gameworld: ${gameworld}`}/api`,
   generateGameworldToken: (_, gameworldId, msid) =>
     `${mellonUrl}/game-world/join/gameWorldId/${gameworldId}?msid=${msid}&msname=msid`,
-  joinGameworld: (_, worldName, token, msid) =>
+  generateGameworldSession: (_, worldName, token, msid) =>
     `${gameworldUrl`gameworld: ${worldName}`}/api/login.php?token=${token}&msid=${msid}&msname=msid`,
 }
