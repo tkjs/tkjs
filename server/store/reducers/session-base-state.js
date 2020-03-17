@@ -6,67 +6,67 @@ const {
   RESET_SESSION,
   RESET_COOKIE,
   RESET_AGE,
-  RESET_STATE,
-} = require('../../actions/action-types')
+  RESET_STATE
+} = require("../../actions/action-types");
 
 const initState = {
-  session: '',
-  cookie: '',
-  age: null,
-}
+  session: "",
+  cookie: "",
+  age: null
+};
 
 module.exports = function(state = initState, action) {
   switch (action.type) {
     case UPDATE_SESSION:
       return {
         ...state,
-        session: action.session,
-      }
+        session: action.session
+      };
 
     case UPDATE_COOKIE:
       return {
         ...state,
-        cookie: action.cookie,
-      }
+        cookie: action.cookie
+      };
 
     case UPDATE_AGE:
       return {
         ...state,
-        age: action.age,
-      }
+        age: action.age
+      };
 
     case UPDATE_STATE:
       return {
         ...state,
-        ...action.newState,
-      }
+        ...action.newState
+      };
 
     case RESET_SESSION:
       return {
         ...state,
-        session: '',
-      }
+        session: ""
+      };
 
     case RESET_COOKIE:
       return {
         ...state,
-        cookie: '',
-      }
+        cookie: ""
+      };
 
     case RESET_AGE:
       return {
         ...state,
-        age: null,
-      }
+        age: null
+      };
 
     case RESET_STATE:
       return {
-        session: '',
-        cookie: '',
-        age: null,
-      }
+        session: "",
+        cookie: "",
+        age: null
+      };
 
     default:
-      return state
+      return state;
   }
-}
+};

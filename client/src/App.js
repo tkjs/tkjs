@@ -1,11 +1,11 @@
-import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import React from "react";
+import { Switch, Route } from "react-router-dom";
 
-import './styles/tailwind.css'
+import "./styles/tailwind.css";
 
-import HomePage from './containers/HomePage'
-import Lobby from './containers/Lobby'
-import Gameworld from './containers/Gameworld'
+import HomePage from "./containers/HomePage";
+import Lobby from "./containers/Lobby";
+import Gameworld from "./containers/Gameworld";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
         </Route>
       </Switch>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

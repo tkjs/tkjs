@@ -6,68 +6,68 @@ const {
   RESET_EMAIL,
   RESET_PASSWORD,
   RESET_WORLD_NAME,
-  RESET_ACCOUNT_STATE,
-} = require('../../actions/action-types')
+  RESET_ACCOUNT_STATE
+} = require("../../actions/action-types");
 
 const initState = {
-  email: '',
-  password: '',
-  worldName: '',
-}
+  email: "",
+  password: "",
+  worldName: ""
+};
 
 module.exports = function(state = initState, action) {
   switch (action.type) {
     case UPDATE_EMAIL:
       return {
         ...state,
-        email: action.email,
-      }
+        email: action.email
+      };
 
     case UPDATE_PASSWORD:
       return {
         ...state,
-        password: action.password,
-      }
+        password: action.password
+      };
 
     case UPDATE_WORLD_NAME:
       return {
         ...state,
-        worldName: action.worldName,
-      }
+        worldName: action.worldName
+      };
 
     case UPDATE_ACCOUNT_STATE:
       return {
         ...state,
-        ...action.newState,
-      }
+        ...action.newState
+      };
 
     case RESET_EMAIL:
       return {
         ...state,
-        email: '',
-      }
+        email: ""
+      };
 
     case RESET_PASSWORD:
       return {
         ...state,
-        password: '',
-      }
+        password: ""
+      };
 
     case RESET_WORLD_NAME:
       return {
         ...state,
-        worldName: '',
-      }
+        worldName: ""
+      };
 
     case RESET_ACCOUNT_STATE: {
       return {
-        email: '',
-        password: '',
-        worldName: '',
-      }
+        email: "",
+        password: "",
+        worldName: ""
+      };
     }
 
     default:
-      return state
+      return state;
   }
-}
+};

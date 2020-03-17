@@ -1,62 +1,62 @@
-const qs = require('querystring')
-const axios = require('axios')
+const qs = require("querystring");
+const axios = require("axios");
 
-const store = require('../store')
-const userAgent = require('../constants/user-agent')
-const url = require('../constants/urls')
+const store = require("../store");
+const userAgent = require("../constants/user-agent");
+const url = require("../constants/urls");
 const {
   extractToken,
   extractSession,
-  extractSessionAge,
-} = require('./extractor')
+  extractSessionAge
+} = require("./extractor");
 
 async function getAvatarList() {
   const {
     msid,
-    lobby: { session, cookie: lobbyCookie },
-  } = store.getState()
+    lobby: { session, cookie: lobbyCookie }
+  } = store.getState();
 
   if (!session || !lobbyCookie) {
-    throw { name: 'Forbidden', message: 'There is no session' }
+    throw { name: "Forbidden", message: "There is no session" };
   }
 
-  const cookie = lobbyCookie + msid
+  const cookie = lobbyCookie + msid;
 
   const { data } = await axios.post(
     url.lobbyApi,
     {
-      action: 'get',
-      controller: 'cache',
+      action: "get",
+      controller: "cache",
       params: {
-        names: ['Collection:Avatar'],
+        names: ["Collection:Avatar"]
       },
-      session,
+      session
     },
     {
       headers: {
         ...userAgent,
-        cookie,
-      },
-    },
-  )
+        cookie
+      }
+    }
+  );
 
-  return data.cache[0].data.cache.map(avatar => avatar.data) // only need avatar data
+  return data.cache[0].data.cache.map(avatar => avatar.data); // only need avatar data
 }
 
 async function lobbyAuthentication({ email, password, msid }) {
-  const errors = []
+  const errors = [];
 
-  if (!email) errors.push('Email is required')
-  if (!password) errors.push('Password is required')
-  if (!msid) errors.push('msid is required')
+  if (!email) errors.push("Email is required");
+  if (!password) errors.push("Password is required");
+  if (!msid) errors.push("msid is required");
 
   if (errors.length > 0) {
-    throw { name: 'BadRequest', message: errors }
+    throw { name: "BadRequest", message: errors };
   }
 
   let token,
     response,
-    lobby = { session: '', cookie: '', age: null }
+    lobby = { session: "", cookie: "", age: null };
 
   response = await axios.post(
     url.generateToken`msid: ${msid}`,
@@ -64,11 +64,11 @@ async function lobbyAuthentication({ email, password, msid }) {
     {
       headers: {
         ...userAgent,
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-    },
-  )
-  token = extractToken(response.data)
+        "content-type": "application/x-www-form-urlencoded"
+      }
+    }
+  );
+  token = extractToken(response.data);
 
   response = await axios.get(
     url.generateLobbySession`token: ${token}, msid: ${msid}`,
@@ -76,22 +76,22 @@ async function lobbyAuthentication({ email, password, msid }) {
       maxRedirects: 0,
       validateStatus: status => status >= 200 && status < 303,
       headers: {
-        ...userAgent,
-      },
-    },
-  )
+        ...userAgent
+      }
+    }
+  );
 
   // extract cookie
-  response.headers['set-cookie'].forEach(cookieStr => {
-    if (cookieStr.includes('gl5SessionKey') && !lobby.session) {
-      lobby.session = cookieStr.split(';')[0].split(';')[0]
-      lobby.age = extractSessionAge(cookieStr)
+  response.headers["set-cookie"].forEach(cookieStr => {
+    if (cookieStr.includes("gl5SessionKey") && !lobby.session) {
+      lobby.session = cookieStr.split(";")[0].split(";")[0];
+      lobby.age = extractSessionAge(cookieStr);
     }
-    lobby.cookie += cookieStr.split(';')[0] + '; '
-  })
-  lobby.session = extractSession(lobby.session)
+    lobby.cookie += cookieStr.split(";")[0] + "; ";
+  });
+  lobby.session = extractSession(lobby.session);
 
-  return lobby
+  return lobby;
 }
 
-module.exports = { getAvatarList, lobbyAuthentication }
+module.exports = { getAvatarList, lobbyAuthentication };

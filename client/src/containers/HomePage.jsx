@@ -1,66 +1,66 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
-import LoadingOverlay from 'react-loading-overlay'
-import HashLoader from 'react-spinners/HashLoader'
-import { toast } from 'react-toastify'
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import LoadingOverlay from "react-loading-overlay";
+import HashLoader from "react-spinners/HashLoader";
+import { toast } from "react-toastify";
 
-import ai from '../api/axios-instance'
-import errorMessage from '../utilities/error-message'
+import ai from "../api/axios-instance";
+import errorMessage from "../utilities/error-message";
 
 const styles = {
   container: {
-    width: '25vw',
-  },
-}
+    width: "25vw"
+  }
+};
 
 export default function HomePage() {
-  const [credential, setCredential] = useState({ email: '', password: '' })
-  const [loading, setLoading] = useState(true)
-  const history = useHistory()
+  const [credential, setCredential] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(true);
+  const history = useHistory();
 
   const onSubmitHandler = event => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const errors = []
+    const errors = [];
 
-    if (!credential.email) errors.push('Email is required')
-    if (!credential.password) errors.push('Password is required')
+    if (!credential.email) errors.push("Email is required");
+    if (!credential.password) errors.push("Password is required");
 
     if (errors.length > 0) {
-      errors.forEach(error => toast.error(error))
-      return
+      errors.forEach(error => toast.error(error));
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
-    ai.post('/lobby/authenticate', {
+    ai.post("/lobby/authenticate", {
       email: credential.email,
-      password: credential.password,
+      password: credential.password
     })
       .then(({ data }) => {
-        setLoading(false)
-        history.push('/lobby')
+        setLoading(false);
+        history.push("/lobby");
       })
       .catch(err => {
-        setLoading(false)
-        errorMessage(err)
-      })
-  }
+        setLoading(false);
+        errorMessage(err);
+      });
+  };
 
   useEffect(() => {
-    ai.get('/lobby')
+    ai.get("/lobby")
       .then(({ data }) => {
-        if (data.status === 'Logged In') {
-          setLoading(false)
-          history.push('/lobby')
-          return
-        } else setLoading(false)
+        if (data.status === "Logged In") {
+          setLoading(false);
+          history.push("/lobby");
+          return;
+        } else setLoading(false);
       })
       .catch(err => {
-        setLoading(false)
-        errorMessage(err)
-      })
-  }, [history])
+        setLoading(false);
+        errorMessage(err);
+      });
+  }, [history]);
 
   return (
     <LoadingOverlay
@@ -71,10 +71,11 @@ export default function HomePage() {
       styles={{
         overlay: base => ({
           ...base,
-          background: 'rgba(0, 0, 0, 0.9)',
-          height: '100vh',
-        }),
-      }}>
+          background: "rgba(0, 0, 0, 0.9)",
+          height: "100vh"
+        })
+      }}
+    >
       <div className="w-screen h-screen flex justify-center items-center">
         <div className="flex flex-col" style={styles.container}>
           <div className="text-center">
@@ -130,5 +131,5 @@ export default function HomePage() {
         </div>
       </div>
     </LoadingOverlay>
-  )
+  );
 }

@@ -7,7 +7,11 @@
     "dev": "NODE_ENV=development nodemon bin/www",
     "dev-test": "NODE_ENV=development node test.js"
   },
-  "keywords": ["simple", "travian", "travian kingdom"],
+  "keywords": [
+    "simple",
+    "travian",
+    "travian kingdom"
+  ],
   "author": "didadadida93",
   "license": "MIT",
   "dependencies": {

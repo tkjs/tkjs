@@ -6,33 +6,33 @@ const {
   RESET_SESSION,
   RESET_COOKIE,
   RESET_AGE,
-  RESET_STATE,
-} = require('./action-types')
-const store = require('../store')
+  RESET_STATE
+} = require("./action-types");
+const store = require("../store");
 
 module.exports = {
   updateSession: session => {
-    store.dispatch({ name: 'gameworld', type: UPDATE_SESSION, session })
+    store.dispatch({ name: "gameworld", type: UPDATE_SESSION, session });
   },
   updateCookie: cookie => {
-    store.dispatch({ name: 'gameworld', type: UPDATE_COOKIE, cookie })
+    store.dispatch({ name: "gameworld", type: UPDATE_COOKIE, cookie });
   },
   updateAge: age => {
-    store.dispatch({ name: 'gameworld', type: UPDATE_AGE, age })
+    store.dispatch({ name: "gameworld", type: UPDATE_AGE, age });
   },
   updateState: newState => {
-    store.dispatch({ name: 'gameworld', type: UPDATE_STATE, newState })
+    store.dispatch({ name: "gameworld", type: UPDATE_STATE, newState });
   },
   resetSession: () => {
-    store.dispatch({ name: 'gameworld', type: RESET_SESSION })
+    store.dispatch({ name: "gameworld", type: RESET_SESSION });
   },
   resetCookie: () => {
-    store.dispatch({ name: 'gameworld', type: RESET_COOKIE })
+    store.dispatch({ name: "gameworld", type: RESET_COOKIE });
   },
   resetAge: () => {
-    store.dispatch({ name: 'gameworld', type: RESET_AGE })
+    store.dispatch({ name: "gameworld", type: RESET_AGE });
   },
   resetState: () => {
-    store.dispatch({ name: 'gameworld', type: RESET_STATE })
-  },
-}
+    store.dispatch({ name: "gameworld", type: RESET_STATE });
+  }
+};
