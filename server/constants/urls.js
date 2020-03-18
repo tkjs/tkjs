@@ -14,6 +14,8 @@ class URL {
       account: { worldName }
     } = store.getState();
 
+    if (!worldName) throw { name: "Forbidden", message: "Worldname not found" };
+
     return "https://" + worldName.toLowerCase() + ".kingdoms.com";
   }
 
@@ -32,6 +34,8 @@ class URL {
   static GENERATE_LOBBY_TOKEN() {
     const { msid } = store.getState();
 
+    if (!msid) throw { name: "Forbidden", message: "MSID not found" };
+
     return (
       URL.MELLON_URL +
       `/authentication/login/ajax/form-validate?msid=${msid}&msname=msid`
@@ -41,11 +45,19 @@ class URL {
   static GENERATE_LOBBY_SESSION(token) {
     const { msid } = store.getState();
 
+    if (!msid) throw { name: "Forbidden", message: "MSID not found" };
+    if (!token) throw { name: "BadRequest", message: "Token is required" };
+
     return URL.LOBBY_URL + `/login.php?token=${token}&msid=${msid}&msname=msid`;
   }
 
   static GENERATE_GAMEWORLD_TOKEN(gameworldId) {
     const { msid } = store.getState();
+
+    if (!msid) throw { name: "Forbidden", message: "MSID not found" };
+    if (!gameworldId) {
+      throw { name: "BadRequest", message: "Gameworld ID is required" };
+    }
 
     return (
       URL.MELLON_URL +
@@ -55,6 +67,9 @@ class URL {
 
   static GENERATE_GAMEWORLD_SESSION(token) {
     const { msid } = store.getState();
+
+    if (!msid) throw { name: "Forbidden", message: "MSID not found" };
+    if (!token) throw { name: "BadRequest", message: "Token is required" };
 
     return (
       URL.GAMEWORLD_URL +
