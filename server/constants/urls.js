@@ -29,7 +29,7 @@ class URL {
     return URL.MELLON_URL + "/authentication/login";
   }
 
-  static get GENERATE_LOBBY_TOKEN() {
+  static GENERATE_LOBBY_TOKEN() {
     const { msid } = store.getState();
 
     return (
