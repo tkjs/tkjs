@@ -1,4 +1,4 @@
-const store = require("../store");
+const store = require("./store");
 
 class URL {
   static get LOBBY_URL() {

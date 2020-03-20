@@ -14,4 +14,9 @@ for (let x of range(-13, 14)) {
   }
 }
 
-module.exports = regionIds;
+const userAgent = {
+  "User-Agent":
+    "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0"
+};
+
+module.exports = { regionIds, userAgent };
