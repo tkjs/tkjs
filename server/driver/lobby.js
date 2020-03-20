@@ -89,6 +89,11 @@ class Lobby {
     const data = await Lobby.hitServer(payload);
     return data;
   }
+
+  static async getAvatarList() {
+    const data = await this.getCache({ names: ["Collection:Avatar"] });
+    return data.cache[0].data.cache.map(avatar => avatar.data); // only need avatar data
+  }
 }
 
 module.exports = Lobby;
