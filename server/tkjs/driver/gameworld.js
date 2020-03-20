@@ -15,7 +15,7 @@ class Gameworld {
   static async authenticate(gameworldId, worldName) {
     try {
       if (!gameworldId) throw new BadRequestError("Gameworld Id is required");
-      if (!wolrdName) throw new BadRequest("Worldname is required");
+      if (!worldName) throw new BadRequest("Worldname is required");
 
       let token,
         response,

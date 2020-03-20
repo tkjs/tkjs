@@ -1,4 +1,4 @@
-const store = require("../store");
+const store = require("../tkjs/store");
 const Gameworld = require("../tkjs/driver/gameworld");
 const actions = require("../tkjs/actions");
 
@@ -44,7 +44,7 @@ class GameworldController {
     try {
       const { gameworldId, worldName } = request.body;
 
-      Gameworld.authenticate(gameworldId, worldName);
+      await Gameworld.authenticate(gameworldId, worldName);
 
       response.json({ message: `UpdateState:LoginToGameworld 'success'` });
     } catch (err) {

@@ -7,7 +7,7 @@ class URL {
   }
 
   static get MELLON_URL() {
-    return "https://mellon-t5-traviangames.com";
+    return "https://mellon-t5.traviangames.com";
   }
 
   static get GAMEWORLD_URL() {

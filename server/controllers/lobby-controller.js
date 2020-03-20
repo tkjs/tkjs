@@ -28,7 +28,7 @@ class LobbyController {
     try {
       const { email, password } = request.body;
 
-      Lobby.authenticate(email, password);
+      await Lobby.authenticate(email, password);
 
       response.json({ message: `UpdateState:LoginToLobby 'success'` });
     } catch (err) {

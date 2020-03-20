@@ -1,4 +1,4 @@
-const { range, cellId } = require("../utilities");
+const { range, cellId } = require("./utilities");
 
 const regionIds = {};
 

@@ -1,4 +1,4 @@
-const { InternalError, ExtractorNotFoundError } = require("../errors");
+const { InternalError, ExtractorNotFoundError } = require("./errors");
 
 function extractMsid(source) {
   const msid = /msid=([\w]*)&msname/g.exec(source);
