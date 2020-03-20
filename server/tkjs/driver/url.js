@@ -1,4 +1,5 @@
-const store = require("./store");
+const store = require("../store");
+const { SessionNotFoundError, BadRequestError } = require("../errors");
 
 class URL {
   static get LOBBY_URL() {
@@ -14,7 +15,7 @@ class URL {
       account: { worldName }
     } = store.getState();
 
-    if (!worldName) throw { name: "Forbidden", message: "Worldname not found" };
+    if (!worldName) throw new SessionNotFoundError();
 
     return "https://" + worldName.toLowerCase() + ".kingdoms.com";
   }
@@ -34,7 +35,7 @@ class URL {
   static GENERATE_LOBBY_TOKEN() {
     const { msid } = store.getState();
 
-    if (!msid) throw { name: "Forbidden", message: "MSID not found" };
+    if (!msid) throw new SessionNotFoundError();
 
     return (
       URL.MELLON_URL +
@@ -45,8 +46,8 @@ class URL {
   static GENERATE_LOBBY_SESSION(token) {
     const { msid } = store.getState();
 
-    if (!msid) throw { name: "Forbidden", message: "MSID not found" };
-    if (!token) throw { name: "BadRequest", message: "Token is required" };
+    if (!msid) throw new SessionNotFoundError();
+    if (!token) throw new BadRequestError("Token is required");
 
     return URL.LOBBY_URL + `/login.php?token=${token}&msid=${msid}&msname=msid`;
   }
@@ -54,10 +55,8 @@ class URL {
   static GENERATE_GAMEWORLD_TOKEN(gameworldId) {
     const { msid } = store.getState();
 
-    if (!msid) throw { name: "Forbidden", message: "MSID not found" };
-    if (!gameworldId) {
-      throw { name: "BadRequest", message: "Gameworld ID is required" };
-    }
+    if (!msid) throw new SessionNotFoundError();
+    if (!gameworldId) throw new BadRequestError("Gameworld id is required");
 
     return (
       URL.MELLON_URL +
@@ -68,8 +67,8 @@ class URL {
   static GENERATE_GAMEWORLD_SESSION(token) {
     const { msid } = store.getState();
 
-    if (!msid) throw { name: "Forbidden", message: "MSID not found" };
-    if (!token) throw { name: "BadRequest", message: "Token is required" };
+    if (!msid) throw new SessionNotFoundError();
+    if (!token) throw new BadRequestError("Token is required");
 
     return (
       URL.GAMEWORLD_URL +

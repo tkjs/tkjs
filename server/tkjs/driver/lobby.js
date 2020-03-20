@@ -5,6 +5,7 @@ const URL = require("./url");
 const store = require("../store");
 const { extractor } = require("../utilities");
 const { userAgent } = require("../constants");
+const { SessionNotFoundError } = require("../errors");
 const { updateState, resetState } = require("../actions");
 
 class Lobby {
@@ -66,7 +67,7 @@ class Lobby {
     } = store.getState();
 
     if (!msid || !session || !lobbyCookie) {
-      throw { name: "Forbidden", message: "There is no session" };
+      throw new SessionNotFoundError();
     }
 
     const cookie = lobbyCookie + msid;

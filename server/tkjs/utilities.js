@@ -1,20 +1,20 @@
-const { InternalError } = require("../errors");
+const { InternalError, ExtractorNotFoundError } = require("../errors");
 
 function extractMsid(source) {
   const msid = /msid=([\w]*)&msname/g.exec(source);
-  if (!msid) throw { name: "BadRequest", message: "msid not found" };
+  if (!msid) throw new ExtractorNotFoundError("MSID not found");
   return msid[1];
 }
 
 function extractToken(source) {
   const token = /token=([\w]*)&msid/g.exec(source);
-  if (!token) throw { name: "BadRequest", message: "Token not found" };
+  if (!token) throw new ExtractorNotFoundError("Token not found");
   return token[1];
 }
 
 function extractSession(source) {
   const session = /%7B%22key%22%3A%22([\w]*)%22%2C%22/g.exec(source);
-  if (!session) throw { name: "BadRequest", message: "session not found" };
+  if (!session) throw new ExtractorNotFoundError("Session not found");
   return session[1];
 }
 
