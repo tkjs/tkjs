@@ -1,31 +1,50 @@
 const store = require("../store");
-const actions = require("../actions");
-
-const { gameworldAuthentication } = require("../utilities");
+const Gameworld = require("../tkjs/driver/gameworld");
+const actions = require("../tkjs/actions");
 
 class GameworldController {
   static getState(request, response, next) {
     const {
-      gameworld: { session, cookie, age }
+      msid,
+      account: { worldName },
+      lobby: { session: lobbySession, cookie: lobbyCookie, age: lobbyAge },
+      gameworld: {
+        session: gameworldSession,
+        cookie: gameworldCookie,
+        age: gameworldAge
+      }
     } = store.getState();
 
-    if (session && cookie && age > new Date()) {
+    if (
+      msid &&
+      worldName &&
+      lobbySession &&
+      lobbyCookie &&
+      lobbyAge > new Date() &&
+      gameworldSession &&
+      gameworldCookie &&
+      gameworldAge > new Date()
+    ) {
       response.json({ status: "Logged In", type: "Gameworld" });
     } else {
       response.json({ status: "Logged Out", type: "Gameworld" });
     }
   }
 
+  static async getOwnVillage(request, response, next) {
+    try {
+      const ownVillages = await Gameworld.getOwnVillage();
+      response.json({ ownVillages });
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async authenticate(request, response, next) {
     try {
       const { gameworldId, worldName } = request.body;
-      const gameworld = await gameworldAuthentication({
-        gameworldId,
-        worldName
-      });
 
-      actions.gameworld.updateState(gameworld);
-      actions.account.updateWorldName(worldName);
+      Gameworld.authenticate(gameworldId, worldName);
 
       response.json({ message: `UpdateState:LoginToGameworld 'success'` });
     } catch (err) {

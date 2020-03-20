@@ -1,6 +1,6 @@
-const store = require("../store");
-const actions = require("../actions");
-const { getMsid, getAvatarList, lobbyAuthentication } = require("../utilities");
+const store = require("../tkjs/store");
+const Lobby = require("../tkjs/driver/lobby");
+const { resetState } = require("../tkjs/actions");
 
 class LobbyController {
   static getState(request, response, next) {
@@ -15,9 +15,9 @@ class LobbyController {
     }
   }
 
-  static async getAvatar(request, response, next) {
+  static async getAvatarList(request, response, next) {
     try {
-      const avatarList = await getAvatarList();
+      const avatarList = await Lobby.getAvatarList();
       response.json({ avatarList });
     } catch (err) {
       next(err);
@@ -26,13 +26,9 @@ class LobbyController {
 
   static async authenticate(request, response, next) {
     try {
-      let { email, password } = request.body;
-      let msid = await getMsid();
-      let lobby = await lobbyAuthentication({ email, password, msid });
+      const { email, password } = request.body;
 
-      actions.msid.update(msid);
-      actions.account.updateState({ email, password });
-      actions.lobby.updateState({ ...lobby });
+      Lobby.authenticate(email, password);
 
       response.json({ message: `UpdateState:LoginToLobby 'success'` });
     } catch (err) {
@@ -41,9 +37,10 @@ class LobbyController {
   }
 
   static resetState(request, response, next) {
-    actions.msid.reset();
-    actions.account.resetState();
-    actions.lobby.resetState();
+    resetState({ type: "msid" });
+    resetState({ type: "account" });
+    resetState({ type: "lobby" });
+
     response.json({ message: `UpdateState:LogoutFromLobby 'success'` });
   }
 }
