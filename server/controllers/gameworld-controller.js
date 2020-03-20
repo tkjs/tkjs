@@ -1,6 +1,6 @@
 const store = require("../tkjs/store");
-const Gameworld = require("../tkjs/driver/gameworld");
 const actions = require("../tkjs/actions");
+const Gameworld = require("../tkjs/driver/gameworld");
 
 class GameworldController {
   static getState(request, response, next) {
