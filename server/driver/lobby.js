@@ -16,7 +16,6 @@ class Lobby {
       let token,
         response,
         lobby = { session: "", cookie: "", age: null };
-      // const driver = axios.create({ headers: { ...userAgent } });
       const driver = this.driver;
 
       response = await driver.get(URL.GET_MSID);
@@ -77,6 +76,17 @@ class Lobby {
       { headers: { cookie } }
     );
 
+    return data;
+  }
+
+  static async getCache(params) {
+    const payload = {
+      action: "get",
+      controller: "cache",
+      params
+    };
+
+    const data = await Lobby.hitServer(payload);
     return data;
   }
 }
